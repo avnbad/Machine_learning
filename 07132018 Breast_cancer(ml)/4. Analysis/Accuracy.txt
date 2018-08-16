@@ -1,0 +1,2 @@
+ best accuracy = 0.9538461538461539
+ mean accuracy = 0.9494685928170806
