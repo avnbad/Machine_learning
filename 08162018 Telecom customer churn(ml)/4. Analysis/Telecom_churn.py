@@ -24,37 +24,13 @@ sc = StandardScaler()
 X_train = sc.fit_transform(X_train)
 X_test = sc.transform(X_test)
 
-# Part 2 - Now let's make the ANN!
 
-# Importing the Keras libraries and packages
-import keras
-from keras.models import Sequential
-from keras.layers import Dense
-
-# Initialising the ANN
-classifier = Sequential()
-
-# Adding the input layer and the first hidden layer
-classifier.add(Dense(output_dim = 15, init = 'uniform', activation = 'relu', input_dim = 29))
-
-# Adding the second hidden layer
-classifier.add(Dense(output_dim = 8, init = 'uniform', activation = 'relu'))
-
-# Adding the output layer
-classifier.add(Dense(output_dim = 1, init = 'uniform', activation = 'sigmoid'))
-
-# Compiling the ANN
-classifier.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'])
-
-# Fitting the ANN to the Training set
-classifier.fit(X_train, y_train, batch_size = 10, nb_epoch = 100)
-
-
-# Fitting XGBoost to the Training set #accuracy=0.8107899731992727 std=0.011912047519692425
-"""import xgboost as xgb
+# Fitting XGBoost to the Training set 
+#accuracy=0.8107899731992727 std=0.011912047519692425
+import xgboost as xgb
 from xgboost import XGBClassifier
 classifier = XGBClassifier()
-classifier.fit(X_train, y_train)"""
+classifier.fit(X_train, y_train)
 
 
 
@@ -76,18 +52,3 @@ accuracies = cross_val_score(estimator = classifier, X = X_train, y = y_train, c
 accuracies.mean()
 accuracies.std()
 
-
-# Evaluating the ANN
-from keras.wrappers.scikit_learn import KerasClassifier
-from sklearn.model_selection import cross_val_score
-def build_classifier():
-    classifier = Sequential()
-    classifier.add(Dense(units = 15, kernel_initializer = 'uniform', activation = 'relu', input_dim = 29))
-    classifier.add(Dense(units = 8, kernel_initializer = 'uniform', activation = 'relu'))
-    classifier.add(Dense(units = 1, kernel_initializer = 'uniform', activation = 'sigmoid'))
-    classifier.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'])
-    return classifier
-classifier = KerasClassifier(build_fn = build_classifier, batch_size = 10, epochs = 100)
-accuracies = cross_val_score(estimator = classifier, X = X_train, y = y_train, cv = 10)
-mean = accuracies.mean()
-variance = accuracies.std()
